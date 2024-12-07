@@ -1,0 +1,74 @@
+%YAML 1.2
+---
+
+name: PyBlade
+scope: source.pyblade
+version: 2
+extends: Packages/HTML/HTML.sublime-syntax
+file_extensions:
+  - html
+
+contexts:
+  main:
+    - match: '{#'
+      scope: comment.block.pyblade
+      push: comment
+    - match: '\b(?:if|switch|for|while|section|block|auth|guest)\b'
+      scope: keyword.control.pyblade
+      push: block
+    - match: '{' 
+      scope: punctuation.definition.section.begin.pyblade
+      push: block
+
+  block:
+    - match: "@(if|elif|else|unless|switch|case|default|for|empty|break|continue|auth|guest|anonymous|csrf|method|field|class|props|required|selected|checked|active|static|extends|yield|section|blocktranslate|endblocktranslate|plural|block|endblock|include|endif|endfor|endswitch|endauth|endguest|endanonymous|enderror)"
+      scope: keyword.control.pyblade
+      pop: true
+
+  comment:
+    - match: '#}'
+      scope: comment.block.pyblade
+      pop: true
+
+folding_start_marker: "^\\s*@(?:if|switch|for|while|section|block|auth|guest)\\b.*$"
+folding_stop_marker: "^\\s*@(?:endif|endswitch|endfor|endwhile|endsection)\\b.*$"
+
+
+patterns:
+  - name: comment.block.pyblade
+    begin: '\\{#'
+    end: '#\\}'
+  - begin: '(\\{\\{|\\{!!)'
+    end: '(\\}\\}|!!\\})'
+    contentName: source.python
+    patterns:
+      - include: source.python
+  - begin: '@(if|elif|for|active|checked|selected|required|error|break|continue)\\('
+    end: '\\)'
+    captures:
+      '0':
+        name: keyword.control.pyblade
+    contentName: source.python
+    patterns:
+      - include: source.python
+  - begin: '@(extends|yield|section|block|include|method)\\('
+    end: '\\)'
+    captures:
+      '0':
+        name: keyword.control.pyblade
+    patterns:
+      - name: string.quoted.single.pyblade
+        match: "'[^']*'"
+      - name: string.quoted.double.pyblade
+        match: '"[^"]*"'
+  - begin: '@(url|static|trans|translate|class|props|style|field|livebladeScripts|liveblade_scripts)\\s*\\('
+    end: '\\)'
+    captures:
+      '0':
+        name: support.function.pyblade
+    contentName: source.python
+    patterns:
+      - include: source.python
+  - name: keyword.control.pyblade
+    match: '@(if|elif|else|unless|switch|case|default|for|empty|break|continue|auth|guest|anonymous|csrf|method|field|class|props|required|selected|checked|active|static|extends|yield|section|blocktranslate|endblocktranslate|plural|block|endblock|include|endif|endfor|endswitch|endauth|endguest|endanonymous|enderror)"
+  - include: text.html.basic

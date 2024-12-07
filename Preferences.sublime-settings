@@ -1,0 +1,25 @@
+{
+    "brackets": [
+        ["(", ")"],
+        ["{", "}"],
+        ["{{", "}}"],
+        ["{!!", "!!}"]
+    ],
+    "auto_complete_triggers": [
+        {
+            "selector": "source.yourlanguage",
+            "characters": "'\"`([{"
+        }
+    ],
+    "auto_match_enabled": true,
+    "auto_complete_close_tags": true,
+    "surrounding_pairs": [
+        { "open": "{", "close": "}" },
+        { "open": "[", "close": "]" },
+        { "open": "(", "close": ")" },
+        { "open": "'", "close": "'" },
+        { "open": "\"", "close": "\"" },
+        { "open": "`", "close": "`" },
+        { "open": "\"\"\"", "close": "\"\"\""}
+    ]
+}
